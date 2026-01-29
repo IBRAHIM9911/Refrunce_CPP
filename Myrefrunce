@@ -1,0 +1,292 @@
+bits function{
+
+    int setbit1 (int nm, int idx) {
+        return nm | (1ll << idx);
+    }
+
+    int setbit0 (int nm, int idx) {
+        return nm & ~(1ll << idx);
+    }
+
+    int getbit (int nm, int idx) {
+        return (nm >> idx) & 1ll;
+    }
+
+    int cntbit1(int nm) {
+        int cnt = 0;
+        while (nm) {
+            nm &= (nm-1ll);
+            cnt++;
+        }
+        return cnt;
+    }
+
+    int flibbit (int nm, int idx) {
+        return nm ^ (1ll << idx);
+    }
+
+    int lastbitval (int nm) {
+        return nm & ~(nm-1ll);
+    }
+
+    void printbit (int nm) {
+        if (nm <= 1) {
+            cout << nm;
+            return;
+        }
+        printbit(nm >> 1ll);
+        cout << (nm & 1ll);
+    }
+}
+
+bool isPalindrome(const string &s) {
+    return equal(s.begin(), s.begin() + s.size() / 2, s.rbegin());
+}
+
+//to split string into words
+vector<string> split(const string &s) {
+
+    stringstream ss(s);
+    vector<string> v;
+    string x;
+    while (ss >> x)
+        v.push_back(x);
+    return v;
+
+}
+sieve function {
+    int con = 1e7+1;
+    vector<int> F_prime;
+    void sieve()
+    {
+        for(int i = 2; i < con; i++)
+        {
+            if(!F_prime[i])
+            {
+                for(int j = i; j < con; j += i)
+                {
+                    F_prime[j] = i;
+                }
+            }
+        }
+    }
+
+    F_prime = vector<int>(con);
+    sieve();
+    F_prime[1] = 1;
+}
+void  sieve_v2(){
+	for (int i = 0; i < con; i++)
+		F_prime[i] = 1;
+	F_prime[0] = F_prime[1] = 0;
+	for (int i = 4; i < con; i += 2){
+		F_prime[i] = 2;
+	}
+	for (int i = 3; i * i < con; i += 2){
+		if (F_prime[i]){
+			for (int j = i * i; j < con; j += i + i){
+				F_prime[j] = i;
+			}
+		}
+	}
+}
+
+const int N = 1e6 + 1;
+vector<vector<int> > divi(N);
+
+void divisors() {
+    for (int i = 2; i < N; i++) {
+        for (int j = i; j < N; j += i) {
+            divi[j].push_back(i);
+        }
+    }
+}
+
+const int N = 1e6 + 1;
+vector<vector<int>> divi;
+void divisors() {
+    for (ll i = 1; i*i <= N; i++) {
+        for (ll j = i; j <= N; j += i) {
+            divi[j].emplace_back(i);
+            divi[j].emplace_back(j/i);
+        }
+    }
+    for (int i = 0; i <= N; i++) {
+        sort(all(divi[i]));
+        divi[i].erase(unique(all(divi[i])),divi[i].end());
+    }
+}
+
+itreative {
+    int ask(int type, int nm1, int nm2)
+    {
+        cout << type << " " << nm1 << " " << nm2 << endl;
+        int x;
+        cin >> x;
+        return x;
+    }
+}
+
+ll fpow(ll num, ll pow, ll mod) {
+    if (pow == 0) return 1;
+    if (pow == 1) return num;
+    ll ans = fpow(num, pow/2, mod);
+    ans = ans*ans % mod;
+    if (pow & 1) ans = ans * num % mod;
+    return ans;
+}
+ll fpow (ll num, ll pow, ll mod = 1e9+7) {
+    ll res = 1;
+    while (pow) {
+        if ((pow & 1)) {
+            res = res * num % mod;
+        }
+        num = num *num % mod;
+        pow /= 2;
+    }
+    return res % mod;
+}
+// x^1 + x^2 + x^3 + .... + x^n;
+ll sum_pow(ll num, ll pow, ll mod = 1e9+7) {
+    if (pow == 1) return  num % mod;
+    ll ans = sum_pow(num, pow/2, mod);
+    ans = ans + (ans * fpow(num, pow/2, mod)) % mod;
+    if (pow & 1) ans = (ans + fpow(num, pow, mod)) % mod;
+    return ans % mod;
+}
+int comp_double(double a, double b){
+    if(fabs(a-b) <= 1e10){
+        return 0;
+    }
+    return a > b ? 1 : -1;
+}
+NCR using bascal tringle
+    vector<vector<int>> ncr(2e5+2,vector<int> (101, 0));
+    for (int i = 0; i <= 2e5; i++) {
+        ncr[i][0] = 1;
+        if (i <= 100)
+            ncr[i][i] = 1;
+    }
+    for (int i = 1; i <= 2e5; i++) {
+        for (int j = 1; j <= min(i, 100ll); j++) {
+            ncr[i][j] = ncr[i-1][j]+ncr[i-1][j-1];
+        }
+    }
+
+order set {
+    #define ordered_set tree<ll, null_type,less_equal<ll>,rb_tree_tag,tree_order_statistics_node_update>
+        typedef tree<
+            pair<int, int>,
+            null_type,
+            less<pair<int, int>>,rb_tree_tag,
+            tree_order_statistics_node_update>
+        ordered_multiset;
+}
+
+Number of digits of factorial:
+    double sum = 0;
+    for(int i = 1; i <= n; i++){
+        sum += log10(i);
+    }
+    cout << "Number of digits of "<< n << "! is "<<floor(sum)+1;
+
+// code to git the divisors and prime of numberes up to 10^18
+{
+    class Pollard {
+    public:
+        using ul = uint64_t;
+        using db = long double;
+        map<ul, int> cnt_primes;
+        vector<ul> primes, divisors;
+
+        ul modMul(ul a, ul b, const ul mod) {
+            ll ret = a * b - mod * (ul) ((db) a * b / mod);
+            return ret + ((ret < 0) - (ret >= (ll) mod)) * mod;
+        }
+
+        ul modPow(ul a, ul b, const ul mod) {
+            if (b == 0) return 1;
+            ul res = modPow(a, b / 2, mod);
+            res = modMul(res, res, mod);
+            return b & 1 ? modMul(res, a, mod) : res;
+        }
+
+        bool rabin_miller(ul n) {
+            // not ll!
+            if (n < 2 || n % 6 % 4 != 1) return n - 2 < 2;
+            ul A[] = {2, 325, 9375, 28178, 450775, 9780504, 1795265022},
+                    s = __builtin_ctzll(n - 1), d = n >> s;
+            for (auto a: A) {
+                // ^ count trailing zeroes
+                ul p = modPow(a, d, n), i = s;
+                while (p != 1 && p != n - 1 && a % n && i--) p = modMul(p, p, n);
+                if (p != n - 1 && i != s) return 0;
+            }
+            return 1;
+        }
+
+        ul pollard(ul n) {
+            // return some nontrivial factor of n
+            auto f = [n, this](ul x) { return modMul(x, x, n) + 1; };
+            ul x = 0, y = 0, t = 30, prd = 2, i = 1, q;
+            while (t++ % 40 ||
+                   __gcd(prd, n) == 1) {
+                /// speedup: don't take gcd every it
+                if (x == y) x = ++i, y = f(x);
+                if ((q = modMul(prd, max(x, y) - min(x, y), n))) prd = q;
+                x = f(x), y = f(f(y));
+            }
+            return __gcd(prd, n);
+        }
+
+        void factor_rec(ul n, map<ul, int> &cnt) {
+            if (n == 1) return;
+            if (rabin_miller(n)) {
+                ++cnt[n];
+                return;
+            }
+            ul u = pollard(n);
+            factor_rec(u, cnt), factor_rec(n / u, cnt);
+        }
+
+        void calcDivisorsRec(ul cur, int i) {
+            if (i >= primes.size()) {
+                divisors.push_back(cur);
+                return;
+            }
+            int r = cnt_primes[primes[i]];
+            for (int j = 0; j <= r; j++) {
+                calcDivisorsRec(cur, i + 1);
+                cur = cur * primes[i];
+            }
+        }
+
+        void calcDivisors(ul x) {
+            cnt_primes.clear();
+            primes.clear();
+            divisors.clear();
+            factor_rec(x, cnt_primes);
+            for (auto &u: cnt_primes) {
+                primes.push_back(u.first);
+            }
+            calcDivisorsRec(1, 0);
+        }
+    } P;
+}
+Mathematical Laws{
+    Area:
+        1=> Trapezoid is A = .5 * (b1+b2) * h;
+        2=> Rhombus is A = .5 * d1 * d2;
+        3=> Ellipse is A = pi * a * b; // بيضاوي
+        4=> Regular Polygon is A = .5 * n * L * R // شكل منتظم L هي طول الوجه n عدد الاوجه R المسافة من المنتصف للوجه
+    volume:
+        1=> Sphere is V = 4 / 3 * pi * r^3 // كرة
+        2=> Cylinder is V = pi * r^2 * h // اسطوانة
+        3=> Cone is V = 1 / 3 * pi * r^2 * h
+        4=> Pyramid is V = 1 / 3 * B * h
+    LOGS:
+        1 => b^(logb(x)) = x
+        2 => x * b^y = b^(logb(x) + y)
+        3 => num of prime = n/log10(n)  // قيمة قريبة وليست حقيقية
+
+}
