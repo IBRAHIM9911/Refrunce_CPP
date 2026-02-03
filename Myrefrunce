@@ -1,3 +1,4 @@
+git
 bits function{
 
     int setbit1 (int nm, int idx) {
@@ -52,7 +53,6 @@ vector<string> split(const string &s) {
     while (ss >> x)
         v.push_back(x);
     return v;
-
 }
 sieve function {
     int con = 1e7+1;
@@ -116,17 +116,6 @@ void divisors() {
         divi[i].erase(unique(all(divi[i])),divi[i].end());
     }
 }
-
-itreative {
-    int ask(int type, int nm1, int nm2)
-    {
-        cout << type << " " << nm1 << " " << nm2 << endl;
-        int x;
-        cin >> x;
-        return x;
-    }
-}
-
 ll fpow(ll num, ll pow, ll mod) {
     if (pow == 0) return 1;
     if (pow == 1) return num;
@@ -154,12 +143,14 @@ ll sum_pow(ll num, ll pow, ll mod = 1e9+7) {
     if (pow & 1) ans = (ans + fpow(num, pow, mod)) % mod;
     return ans % mod;
 }
+
 int comp_double(double a, double b){
     if(fabs(a-b) <= 1e10){
         return 0;
     }
     return a > b ? 1 : -1;
 }
+
 NCR using bascal tringle
     vector<vector<int>> ncr(2e5+2,vector<int> (101, 0));
     for (int i = 0; i <= 2e5; i++) {
@@ -173,6 +164,35 @@ NCR using bascal tringle
         }
     }
 
+const int N = 2e5 + 5;
+const int mod = 1e9 + 7;
+ll fact[N];
+ll inv[N];
+ll invfact[N];
+
+void factInverse() {
+    fact[0] = inv[1] = fact[1] = invfact[0] = invfact[1] = 1;
+    for (long long i = 2; i < N; i++) {
+        fact[i] = (fact[i - 1] * i) % mod;
+        inv[i] = mod - (inv[mod % i] * (mod / i) % mod);
+        invfact[i] = (inv[i] * invfact[i - 1]) % mod;
+    }
+}
+
+ll nCr(int n, int r) {
+    if (r > n) return 0;
+    return (((fact[n] * invfact[r]) % mod) * invfact[n - r]) % mod;
+}
+
+itreative {
+    int ask(int type, int nm1, int nm2)
+    {
+        cout << type << " " << nm1 << " " << nm2 << endl;
+        int x;
+        cin >> x;
+        return x;
+    }
+}
 order set {
     #define ordered_set tree<ll, null_type,less_equal<ll>,rb_tree_tag,tree_order_statistics_node_update>
         typedef tree<
@@ -273,6 +293,7 @@ Number of digits of factorial:
         }
     } P;
 }
+
 Mathematical Laws{
     Area:
         1=> Trapezoid is A = .5 * (b1+b2) * h;
