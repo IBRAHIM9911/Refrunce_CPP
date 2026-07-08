@@ -93,6 +93,7 @@ int divCount[N];
 int startIdx[N];
 vector<int> divi;
 
+
 void buildDivisors() {
     for (int i = 1; i < N; i++)
         for (int j = i; j < N; j += i)
