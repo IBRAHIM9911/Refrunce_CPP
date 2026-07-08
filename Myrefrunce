@@ -12,7 +12,6 @@ bits function{
     int getbit (int nm, int idx) {
         return (nm >> idx) & 1ll;
     }
-
     int cntbit1(int nm) {
         int cnt = 0;
         while (nm) {
@@ -46,7 +45,6 @@ bool isPalindrome(const string &s) {
 
 //to split string into words
 vector<string> split(const string &s) {
-
     stringstream ss(s);
     vector<string> v;
     string x;
@@ -90,6 +88,29 @@ void  sieve_v2(){
 		}
 	}
 }
+const int N = 1e6 + 1;
+int divCount[N];
+int startIdx[N];
+vector<int> divi;
+
+void buildDivisors() {
+    for (int i = 1; i < N; i++)
+        for (int j = i; j < N; j += i)
+            divCount[j]++;
+
+    startIdx[0] = 0;
+    for (int i = 1; i < N; i++)
+        startIdx[i] = startIdx[i - 1] + divCount[i - 1];
+
+    int total = startIdx[N - 1] + divCount[N - 1];
+    divi.resize(total);
+
+    vector<int> pos(startIdx, startIdx + N);
+    for (int i = 1; i < N; i++)
+        for (int j = i; j < N; j += i)
+            divi[pos[j]++] = i;
+}
+buildDivisors();
 
 const int N = 1e6 + 1;
 vector<vector<int> > divi(N);
@@ -303,7 +324,9 @@ Number of digits of factorial:
         }
     } P;
 }
-
+ld rad2deg(ld r){
+    return r * 180.0 / numbers::pi;
+}
 Mathematical Laws{
     Area:
         1=> Trapezoid is A = .5 * (b1+b2) * h;
